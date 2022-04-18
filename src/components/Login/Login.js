@@ -1,10 +1,13 @@
 import axios from 'axios'
 import swAlert from "@sweetalert/with-react"
+import {useNavigate } from 'react-router-dom'
 
+//redirect cambi a Navigate
+//useHistory cambia a useNavigate 
 
 const Login = () => {
 
-
+    const navigate=useNavigate ();
 
     const submitHandler = e => {
         e.preventDefault();
@@ -38,6 +41,7 @@ const Login = () => {
                 swAlert(<h2>Ingresaste correctamente</h2>)
                 const tokenRecibido=res.data.token
                 localStorage.setItem("token",tokenRecibido);
+                navigate("/listado")
             })
     }
 
