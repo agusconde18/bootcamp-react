@@ -1,6 +1,10 @@
 import axios from 'axios'
 import swAlert from "@sweetalert/with-react"
-import {useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import TextField from '@mui/material/TextField'
+import {Button,Snackbar,Alert} from '@mui/material'
+import { forwardRef, useState } from 'react'
+
 
 //redirect cambi a Navigate
 //useHistory cambia a useNavigate 
@@ -16,6 +20,8 @@ const Login = () => {
         const email= e.target.email.value;
         const password=e.target.password.value;
         
+        
+
         const regexEmail = 
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -28,11 +34,6 @@ const Login = () => {
             return
         }
 
-        if(email!=="challenge@alkemy.org"||password!== "react"){
-            swAlert(<h2>Credenciales invalidas</h2>)
-            return;
-        }
-
         console.log("La informacion esta ok")
 
         axios
@@ -43,25 +44,38 @@ const Login = () => {
                 localStorage.setItem("token",tokenRecibido);
                 navigate("/listado")
             })
+
+
+        
     }
+    const handleClose = (e) => {
+        //setShowMessage()
+    }
+
+    const [showMessage, setShowMessage]= useState({
+        status: false,
+        message: false,
+        type: ''
+    });
 
     return(
         <>
         <h2>Formulario de Login</h2>
         <form onSubmit={submitHandler}>
-            <label>
-                <span>Correo electronico: </span>
-            <input type="text" name="email"/>
-            </label>
-            <br/>
-            <label>
-            <span>Contraseña:</span>
-            <input type="password" name="password"/>
-            </label>
             
+            <TextField id="outlined-basic" label="Correo Electrónico" variant="outlined" type="email" name="email"/>
+            <br/> <br/>           
+            <TextField id="outlined-basic" label="Contraseña" variant="outlined" type="password" name="password"/>
             <br/>
-            <button type="submit">Ingresar</button>
+            <br/> 
+            <Button type="submit" variant="contained">Iniciar Sesion</Button>
         </form>
+
+        <Snackbar open={showMessage.status} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                This is a success message!
+            </Alert>
+        </Snackbar>
         </>
        
     )
